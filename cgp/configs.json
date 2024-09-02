@@ -1,0 +1,14 @@
+{
+  "image_width": 512,
+  "image_height": 512,
+  "num_rows": 5,
+  "num_columns": 5,
+  "level_back": 2,
+  "num_input": 2,
+  "num_output": 3,
+  "num_functions": 10,
+  "mutation_rate": 0.9,
+  "max_generation": 10,
+  "seed": 12,
+  "export_individuals": true
+}
