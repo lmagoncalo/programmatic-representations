@@ -32,7 +32,7 @@ unzip the file ensuring that a folder called "models" is inside the cloned repos
 models/
 tensorgp/
 stablediffusion_examples/
-emlart_gp.py
+evolve.py
 image_evaluator.py
 laion_aesthetics.py
 ...
@@ -47,7 +47,7 @@ python emlart_gp.py <starting random seed number> <#of runs> <# of generations> 
 ```
 E.g.
 ```bash
-python emlart_gp.py 10 1 30 "sunset, bright colors" 
+python evolve.py 10 1 30 "sunset, bright colors" 
 ``` 
 
 To execute the image evaluator based on Laion aesthetics machine learning model and cosine similarity with the a provided prompt via OpenAI Clip you should issue the following command:
