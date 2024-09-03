@@ -335,8 +335,8 @@ def generate(configs, fitness_function, input_data):
         individual.active_nodes = np.array(active_nodes)
         population.append(individual)
 
-    if configs['export_individuals']:
-        utils.export_images(population, generation_folder)
+    # if configs['export_individuals']:
+    #     utils.export_images(population, generation_folder)
 
     # evaluate first generation
     population = fitness_function(population)
@@ -360,8 +360,8 @@ def generate(configs, fitness_function, input_data):
         utils.create_directory(generation_folder)
 
         # export image of parent
-        if configs['export_individuals']:
-            utils.save_img(generation_folder, "parent", parent.data)
+        # if configs['export_individuals']:
+        #     utils.save_img(generation_folder, "parent", parent.data)
 
         # create new generation and express phenotype of individuals
         population = []
@@ -381,8 +381,8 @@ def generate(configs, fitness_function, input_data):
         population.append(offspring)
 
         # export images of individuals
-        if configs['export_individuals']:
-            utils.export_images(population, generation_folder)
+        # if configs['export_individuals']:
+            # utils.export_images(population, generation_folder)
 
         # evaluate generation
         population = fitness_function(population)

@@ -1,7 +1,7 @@
 # GP https://github.com/AwardOfSky/TensorGP
 from tensorgp.engine import *
 # ML 
-from laion_aesthetics import MLP, normalizer, init_laion
+from laion_aesthetics import normalizer, init_laion
 import clip
 import torch
 # other needed imports
@@ -14,7 +14,7 @@ device = 'cuda' if torch.cuda.is_available() else 'mps' if torch.backends.mps.is
 aesthetic_model, vit_model, preprocess = init_laion(device)
 
 # Process the prompt, only needed once!
-prompt = sys.argv[4]  # e.g. "sunset, bright colors"
+prompt = sys.argv[3]  # e.g. "sunset, bright colors"
 text_inputs = clip.tokenize(prompt).to(device)
 with torch.no_grad():
     text_features = vit_model.encode_text(text_inputs)
@@ -83,78 +83,76 @@ if __name__ == "__main__":
     # we will be creating an individual at the following resolution
     image_resolution = [224, 224, 3]
     # some EC related params
-    initial_seed = int(sys.argv[1])
-    num_runs = int(sys.argv[2])
-    number_generations = int(sys.argv[3])
+    seed = int(sys.argv[1])
+    number_generations = int(sys.argv[2])
 
     fset = {'abs', 'add', 'and', 'cos', 'div', 'exp', 'frac', 'if', 'log',
             'max', 'mdist', 'min', 'mult', 'neg', 'or', 'pow', 'sin', 'sqrt', 'sub', 'tan', 'warp', 'xor'}
 
     # multiple runs
-    for seed in range(initial_seed, initial_seed + num_runs):
-        # create TensorGP engine
-        engine = Engine(
-            fitness_func=image_evaluation,
-            population_size=100,
-            tournament_size=5,
+    # create TensorGP engine
+    engine = Engine(
+        fitness_func=image_evaluation,
+        population_size=100,
+        tournament_size=5,
 
-            # EC related probabilities
-            mutation_rate=0.9,
-            crossover_rate=0.5,
-            # GP specific
-            terminal_prob=0.2,
-            scalar_prob=0.50,
-            uniform_scalar_prob=1,
+        # EC related probabilities
+        mutation_rate=0.9,
+        crossover_rate=0.5,
+        # GP specific
+        terminal_prob=0.2,
+        scalar_prob=0.50,
+        uniform_scalar_prob=1,
 
-            # mutations
-            max_retries=20,
-            mutation_funcs=[Engine.point_mutation, Engine.subtree_mutation, Engine.insert_mutation,
-                            Engine.delete_mutation],
-            mutation_probs=[0.25, 0.3, 0.2, 0.25],
-            min_subtree_dep=None,
-            max_subtree_dep=None,
+        # mutations
+        max_retries=20,
+        mutation_funcs=[Engine.point_mutation, Engine.subtree_mutation, Engine.insert_mutation,
+                        Engine.delete_mutation],
+        mutation_probs=[0.25, 0.3, 0.2, 0.25],
+        min_subtree_dep=None,
+        max_subtree_dep=None,
 
-            # tree init and depth
-            method='ramped half-and-half',
-            max_tree_depth=12,
-            min_tree_depth=-1,
-            min_init_depth=1,
-            max_init_depth=6,
+        # tree init and depth
+        method='ramped half-and-half',
+        max_tree_depth=12,
+        min_tree_depth=-1,
+        min_init_depth=1,
+        max_init_depth=6,
 
-            # GP bloat control algorithm
-            bloat_control='weak',  # based on the work of Silva et. al.
-            bloat_mode='depth',
-            dynamic_limit=5,
-            min_overall_size=1,
-            max_overall_size=12,
+        # GP bloat control algorithm
+        bloat_control='weak',  # based on the work of Silva et. al.
+        bloat_mode='depth',
+        dynamic_limit=5,
+        min_overall_size=1,
+        max_overall_size=12,
 
-            # function set and mapping inputs / outputs
-            domain=[-1, 1],
-            codomain=[-1, 1],
-            do_final_transform=True,
-            # directly to pixel range (8bit)
-            final_transform=[0, 255],
+        # function set and mapping inputs / outputs
+        domain=[-1, 1],
+        codomain=[-1, 1],
+        do_final_transform=True,
+        # directly to pixel range (8bit)
+        final_transform=[0, 255],
 
-            # exp related
-            stop_value=number_generations,
-            effective_dims=3,
-            seed=seed,
-            operators=fset,
-            debug=0,
-            save_to_file=1,
-            save_log=True,
-            target_dims=image_resolution,
-            objective='maximizing',
-            device=dev,
-            stop_criteria='generation',
-            save_graphics=True,
-            show_graphics=False,
-            # read_init_pop_from_file="test_default.txt",
-            exp_prefix='emlart-gp',
-            save_image_pop=True,
-            save_image_best=True,
-            # image_extension="jpg",
-            image_extension="png",
-        )
-        print("Evolving with the prompt:", sys.argv[4])
-        engine.run()
+        # exp related
+        stop_value=number_generations,
+        effective_dims=3,
+        seed=seed,
+        operators=fset,
+        debug=0,
+        save_to_file=1,
+        save_log=True,
+        target_dims=image_resolution,
+        objective='maximizing',
+        device=dev,
+        stop_criteria='generation',
+        save_graphics=True,
+        show_graphics=False,
+        # read_init_pop_from_file="test_default.txt",
+        exp_prefix='emlart-gp',
+        save_image_pop=True,
+        save_image_best=True,
+        # image_extension="jpg",
+        image_extension="png",
+    )
+    print("Evolving with the prompt:", sys.argv[4])
+    engine.run()

@@ -1,29 +1,26 @@
-import neat
-# ML 
-from laion_aesthetics import MLP, normalizer, init_laion
-import clip 
-import torch
-from torchvision.utils import save_image
-# other needed imports
-import os
-import sys
-import time
-import shutil
 import datetime
+
+import os
+import shutil
+import sys
+
+import clip
 import numpy as np
+import torch
 from PIL import Image
 
+import neat
+from laion_aesthetics import init_laion
 
-## device for the clip and aesthetic model
-device = "cpu" # mps -> mac m chips, can also be "cuda" or "cpu" depending on torch installation
+# device for the clip and aesthetic model
+device = 'cuda' if torch.cuda.is_available() else 'mps' if torch.backends.mps.is_available() else 'cpu'
 aesthetic_model, vit_model, preprocess = init_laion(device)
 
-### Process the prompt, only needed once!
-prompt = sys.argv[4] #e.g. "sunset, bright colors"
+# Process the prompt, only needed once!
+prompt = sys.argv[3]  # e.g. "sunset, bright colors"
 text_inputs = clip.tokenize(prompt).to(device)
 with torch.no_grad():
     text_features = vit_model.encode_text(text_inputs)
-###
 
 
 def eval_color_image(genome, config, width, height):
@@ -100,16 +97,14 @@ def image_evaluation(genomes, config):
 
 
 if __name__ == "__main__":
-
     # device definition for TensorGP
-    dev = "gpu:0" #'/gpu:0'  # device to run, write '/cpu_0' to run on cpu
+    dev = "gpu:0"  # '/gpu:0'  # device to run, write '/cpu_0' to run on cpu
     # when converting from genotype to phenotype 
     # we will be creating an individual at the following resolution
     image_resolution = [224, 224, 3]
     # some EC related params
     initial_seed = int(sys.argv[1])
-    num_runs = int(sys.argv[2])
-    number_generations = int(sys.argv[3])
+    number_generations = int(sys.argv[2])
 
     config_path = 'interactive_config_color'
 

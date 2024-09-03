@@ -1,4 +1,5 @@
 import random
+import sys
 
 import clip
 import numpy as np
@@ -13,8 +14,7 @@ from laion_aesthetics import init_laion
 device = 'cuda' if torch.cuda.is_available() else 'mps' if torch.backends.mps.is_available() else 'cpu'
 aesthetic_model, vit_model, preprocess = init_laion(device)
 
-prompt = "red"
-
+prompt = sys.argv[3]  # e.g. "sunset, bright colors"
 text_inputs = clip.tokenize(prompt).to(device)
 with torch.no_grad():
     text_features = vit_model.encode_text(text_inputs)
@@ -24,6 +24,7 @@ def clip(population):
     for indi_i in range(len(population)):
         image = population[indi_i].data.astype(np.uint8)
         image = TF.to_tensor(image).unsqueeze(0)  # .unsqueeze(0)#TF.to_tensor(x).unsqueeze(0)
+        image = image.to(device)
 
         # extract the image features from the clip vit encoding
         with torch.no_grad():
@@ -45,9 +46,14 @@ def clip(population):
 
 
 def main():
+    seed = int(sys.argv[1])
+    number_generations = int(sys.argv[2])
+
     configs = utils.load_configs("configs.json")
 
-    random.seed(configs["seed"])
+    configs['max_generation'] = number_generations
+
+    random.seed(seed)
     input_img = utils.create_white_img(configs['image_width'], configs['image_height'])
     generate(configs, clip, input_img)
 

@@ -8,8 +8,6 @@
   "num_output": 3,
   "num_functions": 10,
   "mutation_rate": 0.4,
-  "max_generation": 30,
-  "seed": 12,
   "export_individuals": true,
   "save_folder": "outputs"
 }
