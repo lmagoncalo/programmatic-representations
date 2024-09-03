@@ -1,20 +1,19 @@
-import argparse
 import random
 
+import clip
 import numpy as np
 import torch
 import torchvision.transforms.functional as TF
-import clip
 
 import utils
-from laion_aesthetics import init_laion
 from evolution import generate
+from laion_aesthetics import init_laion
 
 # device for the clip and aesthetic model
 device = 'cuda' if torch.cuda.is_available() else 'mps' if torch.backends.mps.is_available() else 'cpu'
 aesthetic_model, vit_model, preprocess = init_laion(device)
 
-prompt = "sunset, bright colors"
+prompt = "red"
 
 text_inputs = clip.tokenize(prompt).to(device)
 with torch.no_grad():
@@ -46,26 +45,9 @@ def clip(population):
 
 
 def main():
-    description = "Cartesian Genetic Programming"
-    parser = argparse.ArgumentParser(description=description)
-    parser.add_argument('--config', metavar='config', type=str, help='Configs file')
-    parser.add_argument('--random-seed', metavar="random_seed", type=int, help='Random seed')
-    parser.add_argument('--max-gens', metavar="max_gens", type=int, help='Maximum number of generations')
-    parser.add_argument('--save-folder', metavar="save_folder", type=str, help='Root output folder')
-    args = parser.parse_args()
+    configs = utils.load_configs("configs.json")
 
-    args.config = "configs_clip.json"
-    args.random_seed = 43
-    args.save_folder = "outputs"
-    args.max_gens = 30
-
-    # print(args)
-
-    configs = utils.load_configs(args.config)
-    configs["max_generation"] = args.max_gens
-    configs["save_folder"] = args.save_folder
-
-    random.seed(args.random_seed)
+    random.seed(configs["seed"])
     input_img = utils.create_white_img(configs['image_width'], configs['image_height'])
     generate(configs, clip, input_img)
 
