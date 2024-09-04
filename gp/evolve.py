@@ -154,5 +154,5 @@ if __name__ == "__main__":
         # image_extension="jpg",
         image_extension="png",
     )
-    print("Evolving with the prompt:", sys.argv[4])
+    print("Evolving with the prompt:", sys.argv[3])
     engine.run()

@@ -116,7 +116,7 @@ if __name__ == "__main__":
     config.pop_size = 100
     pop = neat.Population(config)
 
-    print("Evolving with the prompt:", sys.argv[4])
+    print("Evolving with the prompt:", sys.argv[3])
 
     date = datetime.datetime.utcnow().strftime('%Y_%m_%d__%H_%M_%S_%f')[:-3]
     # define the name of the directory with its subdirectories
