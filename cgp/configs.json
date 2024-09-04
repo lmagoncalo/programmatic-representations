@@ -6,8 +6,8 @@
   "level_back": 2,
   "num_input": 2,
   "num_output": 3,
-  "num_functions": 10,
+  "num_functions": 12,
   "mutation_rate": 0.4,
-  "export_individuals": true,
-  "save_folder": "outputs"
+  "export_individuals": false,
+  "save_folder": "runs"
 }

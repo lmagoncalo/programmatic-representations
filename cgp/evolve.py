@@ -14,7 +14,8 @@ from laion_aesthetics import init_laion
 device = 'cuda' if torch.cuda.is_available() else 'mps' if torch.backends.mps.is_available() else 'cpu'
 aesthetic_model, vit_model, preprocess = init_laion(device)
 
-prompt = sys.argv[3]  # e.g. "sunset, bright colors"
+# prompt = sys.argv[3]  # e.g. "sunset, bright colors"
+prompt = "sunset, bright colors"
 text_inputs = clip.tokenize(prompt).to(device)
 with torch.no_grad():
     text_features = vit_model.encode_text(text_inputs)
@@ -46,8 +47,10 @@ def clip(population):
 
 
 def main():
-    seed = int(sys.argv[1])
-    number_generations = int(sys.argv[2])
+    # seed = int(sys.argv[1])
+    # number_generations = int(sys.argv[2])
+    seed = 1
+    number_generations = 1
 
     configs = utils.load_configs("configs.json")
 

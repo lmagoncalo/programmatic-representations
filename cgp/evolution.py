@@ -23,7 +23,6 @@ LOG_FILE = "log.csv"
 
 
 class Individual:
-
     def __init__(self, configs):
         self.num_rows = configs['num_rows']
         self.num_columns = configs['num_columns']
@@ -94,8 +93,6 @@ class Individual:
 
     # mutate genotype
     def mutate(self):
-        # print(self.num_rows)
-        # print(self.num_columns)
         for j in range(self.num_columns):
             for i in range(self.num_rows):
                 if random.random() < self.mutation_rate:
@@ -148,7 +145,6 @@ class Individual:
             o[i, :, :] = input_data[i, :, :]
 
         for j in range(0, n_u):
-
             # get node location in genotype
             n = NP[j] - self.num_input
             n_n = self.count_genes_in_node(NP[j])
@@ -201,9 +197,11 @@ def compute_function(input_array, function):
     elif function == 9:
         result = np.sqrt((np.power(x, 2) + np.power(y, 2)) * 0.5) - 0.5
     elif function == 10:
-        result = x
+        result = x + y
     elif function == 11:
-        result = y
+        result = x - y
+    elif function == 12:
+        result = y - x
 
     # result = np.clip(result, -1.0, 1.0)
     # return np.interp(result, [-1.0, 1.0], [0.0, 1.0])
@@ -292,6 +290,7 @@ def copy_individual(individual_to_copy):
 
 
 def select_parent(population, parent):
+    # TODO : Select parent always choosing the best individual
     if parent is None:
         max_fitness = 0
     else:
@@ -335,8 +334,8 @@ def generate(configs, fitness_function, input_data):
         individual.active_nodes = np.array(active_nodes)
         population.append(individual)
 
-    # if configs['export_individuals']:
-    #     utils.export_images(population, generation_folder)
+    if configs['export_individuals']:
+        utils.export_images(population, generation_folder)
 
     # evaluate first generation
     population = fitness_function(population)
@@ -360,8 +359,8 @@ def generate(configs, fitness_function, input_data):
         utils.create_directory(generation_folder)
 
         # export image of parent
-        # if configs['export_individuals']:
-        #     utils.save_img(generation_folder, "parent", parent.data)
+        if configs['export_individuals']:
+            utils.save_img(generation_folder, "parent", parent.data)
 
         # create new generation and express phenotype of individuals
         population = []
@@ -381,8 +380,8 @@ def generate(configs, fitness_function, input_data):
         population.append(offspring)
 
         # export images of individuals
-        # if configs['export_individuals']:
-            # utils.export_images(population, generation_folder)
+        if configs['export_individuals']:
+            utils.export_images(population, generation_folder)
 
         # evaluate generation
         population = fitness_function(population)
@@ -391,8 +390,8 @@ def generate(configs, fitness_function, input_data):
         # print("\t[PARENT]: Fitness " + "{:.4f}".format(parent.fitness))
 
         parent = select_parent(population, None)
-        if configs['export_individuals']:
-            utils.save_img(best_folder, generation, parent.data)
+        # if configs['export_individuals']:
+        utils.save_img(best_folder, generation, parent.data)
 
         population_statistics(output_folder, generation_folder, generation, population,
                               best=parent, parentStats=True, parent=parent)
