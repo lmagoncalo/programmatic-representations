@@ -1,0 +1,32 @@
+startshape JIbgm_A_A_B_B_B_B_A_B_B
+background {hue 0.58298 }
+rule JIbgm_A_A_B_B_B_B_A_B_B 0.228571{ 
+	CIRCLE { }
+	JIbgm_A_A_B_B_B_B_A_B_B { }
+	CIRCLE { alpha 0.790124 }
+}
+rule owkAe_B_A_B_B 63.{ 
+	JIbgm_A_A_B_B_B_B_A_B_B { hue 201.888475 rotate 296.015814 skew 0.506212 3.821897 z 4.606716 size -0.70236 }
+	CIRCLE { x -3.090671 z 2.003703 flip 2.745866 }
+}
+rule JIbgm_A_B_B_A_A_A_A_A_B_B 0.228571{ 
+	yzoWy_B_B { }
+	JIbgm_A_B_B_A_A_A_A_A_B_B { rotate 99.515083 y -3.737321 }
+}
+rule JIbgm_A_B_B_A_A_A_A_A_B_B 0.228571{ 
+	TRIANGLE { }
+}
+rule yzoWy_B_B 14.{ 
+	JIbgm_A_B_B_A_A_A_A_A_B_B { z -3.304527 }
+	CIRCLE { z -0.323621 flip 0.064938 }
+	yzoWy_B_B { y -2.787551 y 3.964656 skew 2.158858 2.826561 z -2.267213 }
+}
+rule ZCwBJ_B_B 42.{ }
+rule yzoWy_B_B 14.{ 
+	JIbgm_A_A_B_B_B_B_A_B_B { z -3.304527 }
+	TRIANGLE { brightness 0.025518 saturation -0.323621 flip 0.064938 }
+}
+rule ZCwBJ_B_B 42.{ 
+	JIbgm_A_B_B_A_A_A_A_A_B_B { alpha -4.830189 }
+	JIbgm_A_B_B_A_A_A_A_A_B_B { saturation 125.101533 brightness 1.739923 flip -1.844316 }
+}

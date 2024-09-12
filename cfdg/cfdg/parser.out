@@ -1,0 +1,372 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Grammar
+
+Rule 0     S' -> statement
+Rule 1     statement -> startshape_statement statement
+Rule 2     statement -> rule_statement statement
+Rule 3     statement -> background_statement statement
+Rule 4     statement -> startshape_statement
+Rule 5     statement -> rule_statement
+Rule 6     statement -> background_statement
+Rule 7     startshape_statement -> STARTSHAPE NAME
+Rule 8     parameter_list -> NAME values_list parameter_list
+Rule 9     parameter_list -> <empty>
+Rule 10    background_statement -> BACKGROUND LPAR parameter_list RPAR
+Rule 11    values_list -> VALUE values_list
+Rule 12    values_list -> <empty>
+Rule 13    opt_value -> VALUE
+Rule 14    opt_value -> <empty>
+Rule 15    rule_statement -> RULE NAME opt_value LPAR node_list RPAR
+Rule 16    node_list -> NAME LPAR parameter_list RPAR node_list
+Rule 17    node_list -> <empty>
+
+Terminals, with rules where they appear
+
+BACKGROUND           : 10
+LPAR                 : 10 15 16
+NAME                 : 7 8 15 16
+RPAR                 : 10 15 16
+RULE                 : 15
+STARTSHAPE           : 7
+VALUE                : 11 13
+error                : 
+
+Nonterminals, with rules where they appear
+
+background_statement : 3 6
+node_list            : 15 16
+opt_value            : 15
+parameter_list       : 8 10 16
+rule_statement       : 2 5
+startshape_statement : 1 4
+statement            : 1 2 3 0
+values_list          : 8 11
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . statement
+    (1) statement -> . startshape_statement statement
+    (2) statement -> . rule_statement statement
+    (3) statement -> . background_statement statement
+    (4) statement -> . startshape_statement
+    (5) statement -> . rule_statement
+    (6) statement -> . background_statement
+    (7) startshape_statement -> . STARTSHAPE NAME
+    (15) rule_statement -> . RULE NAME opt_value LPAR node_list RPAR
+    (10) background_statement -> . BACKGROUND LPAR parameter_list RPAR
+
+    STARTSHAPE      shift and go to state 1
+    RULE            shift and go to state 3
+    BACKGROUND      shift and go to state 7
+
+    startshape_statement           shift and go to state 2
+    background_statement           shift and go to state 4
+    statement                      shift and go to state 5
+    rule_statement                 shift and go to state 6
+
+state 1
+
+    (7) startshape_statement -> STARTSHAPE . NAME
+
+    NAME            shift and go to state 8
+
+
+state 2
+
+    (1) statement -> startshape_statement . statement
+    (4) statement -> startshape_statement .
+    (1) statement -> . startshape_statement statement
+    (2) statement -> . rule_statement statement
+    (3) statement -> . background_statement statement
+    (4) statement -> . startshape_statement
+    (5) statement -> . rule_statement
+    (6) statement -> . background_statement
+    (7) startshape_statement -> . STARTSHAPE NAME
+    (15) rule_statement -> . RULE NAME opt_value LPAR node_list RPAR
+    (10) background_statement -> . BACKGROUND LPAR parameter_list RPAR
+
+    $end            reduce using rule 4 (statement -> startshape_statement .)
+    STARTSHAPE      shift and go to state 1
+    RULE            shift and go to state 3
+    BACKGROUND      shift and go to state 7
+
+    startshape_statement           shift and go to state 2
+    background_statement           shift and go to state 4
+    statement                      shift and go to state 9
+    rule_statement                 shift and go to state 6
+
+state 3
+
+    (15) rule_statement -> RULE . NAME opt_value LPAR node_list RPAR
+
+    NAME            shift and go to state 10
+
+
+state 4
+
+    (3) statement -> background_statement . statement
+    (6) statement -> background_statement .
+    (1) statement -> . startshape_statement statement
+    (2) statement -> . rule_statement statement
+    (3) statement -> . background_statement statement
+    (4) statement -> . startshape_statement
+    (5) statement -> . rule_statement
+    (6) statement -> . background_statement
+    (7) startshape_statement -> . STARTSHAPE NAME
+    (15) rule_statement -> . RULE NAME opt_value LPAR node_list RPAR
+    (10) background_statement -> . BACKGROUND LPAR parameter_list RPAR
+
+    $end            reduce using rule 6 (statement -> background_statement .)
+    STARTSHAPE      shift and go to state 1
+    RULE            shift and go to state 3
+    BACKGROUND      shift and go to state 7
+
+    startshape_statement           shift and go to state 2
+    background_statement           shift and go to state 4
+    statement                      shift and go to state 11
+    rule_statement                 shift and go to state 6
+
+state 5
+
+    (0) S' -> statement .
+
+
+
+state 6
+
+    (2) statement -> rule_statement . statement
+    (5) statement -> rule_statement .
+    (1) statement -> . startshape_statement statement
+    (2) statement -> . rule_statement statement
+    (3) statement -> . background_statement statement
+    (4) statement -> . startshape_statement
+    (5) statement -> . rule_statement
+    (6) statement -> . background_statement
+    (7) startshape_statement -> . STARTSHAPE NAME
+    (15) rule_statement -> . RULE NAME opt_value LPAR node_list RPAR
+    (10) background_statement -> . BACKGROUND LPAR parameter_list RPAR
+
+    $end            reduce using rule 5 (statement -> rule_statement .)
+    STARTSHAPE      shift and go to state 1
+    RULE            shift and go to state 3
+    BACKGROUND      shift and go to state 7
+
+    rule_statement                 shift and go to state 6
+    background_statement           shift and go to state 4
+    statement                      shift and go to state 12
+    startshape_statement           shift and go to state 2
+
+state 7
+
+    (10) background_statement -> BACKGROUND . LPAR parameter_list RPAR
+
+    LPAR            shift and go to state 13
+
+
+state 8
+
+    (7) startshape_statement -> STARTSHAPE NAME .
+
+    STARTSHAPE      reduce using rule 7 (startshape_statement -> STARTSHAPE NAME .)
+    RULE            reduce using rule 7 (startshape_statement -> STARTSHAPE NAME .)
+    BACKGROUND      reduce using rule 7 (startshape_statement -> STARTSHAPE NAME .)
+    $end            reduce using rule 7 (startshape_statement -> STARTSHAPE NAME .)
+
+
+state 9
+
+    (1) statement -> startshape_statement statement .
+
+    $end            reduce using rule 1 (statement -> startshape_statement statement .)
+
+
+state 10
+
+    (15) rule_statement -> RULE NAME . opt_value LPAR node_list RPAR
+    (13) opt_value -> . VALUE
+    (14) opt_value -> .
+
+    VALUE           shift and go to state 15
+    LPAR            reduce using rule 14 (opt_value -> .)
+
+    opt_value                      shift and go to state 14
+
+state 11
+
+    (3) statement -> background_statement statement .
+
+    $end            reduce using rule 3 (statement -> background_statement statement .)
+
+
+state 12
+
+    (2) statement -> rule_statement statement .
+
+    $end            reduce using rule 2 (statement -> rule_statement statement .)
+
+
+state 13
+
+    (10) background_statement -> BACKGROUND LPAR . parameter_list RPAR
+    (8) parameter_list -> . NAME values_list parameter_list
+    (9) parameter_list -> .
+
+    NAME            shift and go to state 16
+    RPAR            reduce using rule 9 (parameter_list -> .)
+
+    parameter_list                 shift and go to state 17
+
+state 14
+
+    (15) rule_statement -> RULE NAME opt_value . LPAR node_list RPAR
+
+    LPAR            shift and go to state 18
+
+
+state 15
+
+    (13) opt_value -> VALUE .
+
+    LPAR            reduce using rule 13 (opt_value -> VALUE .)
+
+
+state 16
+
+    (8) parameter_list -> NAME . values_list parameter_list
+    (11) values_list -> . VALUE values_list
+    (12) values_list -> .
+
+    VALUE           shift and go to state 19
+    NAME            reduce using rule 12 (values_list -> .)
+    RPAR            reduce using rule 12 (values_list -> .)
+
+    values_list                    shift and go to state 20
+
+state 17
+
+    (10) background_statement -> BACKGROUND LPAR parameter_list . RPAR
+
+    RPAR            shift and go to state 21
+
+
+state 18
+
+    (15) rule_statement -> RULE NAME opt_value LPAR . node_list RPAR
+    (16) node_list -> . NAME LPAR parameter_list RPAR node_list
+    (17) node_list -> .
+
+    NAME            shift and go to state 22
+    RPAR            reduce using rule 17 (node_list -> .)
+
+    node_list                      shift and go to state 23
+
+state 19
+
+    (11) values_list -> VALUE . values_list
+    (11) values_list -> . VALUE values_list
+    (12) values_list -> .
+
+    VALUE           shift and go to state 19
+    NAME            reduce using rule 12 (values_list -> .)
+    RPAR            reduce using rule 12 (values_list -> .)
+
+    values_list                    shift and go to state 24
+
+state 20
+
+    (8) parameter_list -> NAME values_list . parameter_list
+    (8) parameter_list -> . NAME values_list parameter_list
+    (9) parameter_list -> .
+
+    NAME            shift and go to state 16
+    RPAR            reduce using rule 9 (parameter_list -> .)
+
+    parameter_list                 shift and go to state 25
+
+state 21
+
+    (10) background_statement -> BACKGROUND LPAR parameter_list RPAR .
+
+    STARTSHAPE      reduce using rule 10 (background_statement -> BACKGROUND LPAR parameter_list RPAR .)
+    RULE            reduce using rule 10 (background_statement -> BACKGROUND LPAR parameter_list RPAR .)
+    BACKGROUND      reduce using rule 10 (background_statement -> BACKGROUND LPAR parameter_list RPAR .)
+    $end            reduce using rule 10 (background_statement -> BACKGROUND LPAR parameter_list RPAR .)
+
+
+state 22
+
+    (16) node_list -> NAME . LPAR parameter_list RPAR node_list
+
+    LPAR            shift and go to state 26
+
+
+state 23
+
+    (15) rule_statement -> RULE NAME opt_value LPAR node_list . RPAR
+
+    RPAR            shift and go to state 27
+
+
+state 24
+
+    (11) values_list -> VALUE values_list .
+
+    NAME            reduce using rule 11 (values_list -> VALUE values_list .)
+    RPAR            reduce using rule 11 (values_list -> VALUE values_list .)
+
+
+state 25
+
+    (8) parameter_list -> NAME values_list parameter_list .
+
+    RPAR            reduce using rule 8 (parameter_list -> NAME values_list parameter_list .)
+
+
+state 26
+
+    (16) node_list -> NAME LPAR . parameter_list RPAR node_list
+    (8) parameter_list -> . NAME values_list parameter_list
+    (9) parameter_list -> .
+
+    NAME            shift and go to state 16
+    RPAR            reduce using rule 9 (parameter_list -> .)
+
+    parameter_list                 shift and go to state 28
+
+state 27
+
+    (15) rule_statement -> RULE NAME opt_value LPAR node_list RPAR .
+
+    STARTSHAPE      reduce using rule 15 (rule_statement -> RULE NAME opt_value LPAR node_list RPAR .)
+    RULE            reduce using rule 15 (rule_statement -> RULE NAME opt_value LPAR node_list RPAR .)
+    BACKGROUND      reduce using rule 15 (rule_statement -> RULE NAME opt_value LPAR node_list RPAR .)
+    $end            reduce using rule 15 (rule_statement -> RULE NAME opt_value LPAR node_list RPAR .)
+
+
+state 28
+
+    (16) node_list -> NAME LPAR parameter_list . RPAR node_list
+
+    RPAR            shift and go to state 29
+
+
+state 29
+
+    (16) node_list -> NAME LPAR parameter_list RPAR . node_list
+    (16) node_list -> . NAME LPAR parameter_list RPAR node_list
+    (17) node_list -> .
+
+    NAME            shift and go to state 22
+    RPAR            reduce using rule 17 (node_list -> .)
+
+    node_list                      shift and go to state 30
+
+state 30
+
+    (16) node_list -> NAME LPAR parameter_list RPAR node_list .
+
+    RPAR            reduce using rule 16 (node_list -> NAME LPAR parameter_list RPAR node_list .)
+

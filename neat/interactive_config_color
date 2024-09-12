@@ -53,7 +53,7 @@ enabled_mutate_rate     = 0.02
 compatibility_threshold = 5.0
 
 [DefaultStagnation]
-max_stagnation       = 5
+max_stagnation       = 10
 
 [DefaultReproduction]
 elitism            = 0

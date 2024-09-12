@@ -145,12 +145,12 @@ if __name__ == "__main__":
         objective='maximizing',
         device=dev,
         stop_criteria='generation',
-        save_graphics=True,
+        save_graphics=False,  # True
         show_graphics=False,
         # read_init_pop_from_file="test_default.txt",
         exp_prefix='emlart-gp',
-        save_image_pop=True,
-        save_image_best=True,
+        save_image_pop=False,  # True
+        save_image_best=False,  # True
         # image_extension="jpg",
         image_extension="png",
     )

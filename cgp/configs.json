@@ -2,12 +2,12 @@
   "image_width": 224,
   "image_height": 224,
   "num_rows": 5,
-  "num_columns": 5,
-  "level_back": 2,
+  "num_columns": 10,
+  "level_back": 3,
   "num_input": 2,
   "num_output": 3,
   "num_functions": 12,
-  "mutation_rate": 0.4,
+  "mutation_rate": 0.15,
   "export_individuals": false,
   "save_folder": "runs"
 }
