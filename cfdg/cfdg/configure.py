@@ -117,6 +117,7 @@ class Config:
 
 
 		except Exception as err:
+			print("Error: configure.py/readCfgFile/except: Error reading config file: "+self.config_directory)
 			logging.debug("Error: configure.py/readCfgFile/except: Error reading config file: "+self.config_directory)
 			exit(0)
 

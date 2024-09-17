@@ -27,7 +27,7 @@ Ubuntu
 
 ## 2 - Run the Evolutionary Algorithm
 
-2.1 - The `config.cfg`contains mos of the important configurations for algorithm to work.
+2.1 - The `config.cfg`contains most of the important configurations for algorithm to work.
 2.2 - There are some configs that should be sent through the terminal as arguments. An example of the command to execute is as follows:
 
     python motor.py --best_number 10 --nthreads 1 --target-class stingray
