@@ -12,12 +12,12 @@ import torch.nn.functional as F
 def init_laion(device="cpu"):
     print("loading laion model")
     aes_model = MLP(768)  # CLIP embedding dim is 768 for CLIP ViT L 14
-    s = torch.load("../models/sac+logos+ava1-l14-linearMSE.pth", map_location=device)
+    s = torch.load("../../models/sac+logos+ava1-l14-linearMSE.pth", map_location=device)
     aes_model.load_state_dict(s)
     aes_model.to(device)
     aes_model.eval()
     print("loading clip model")
-    vit_clip, clip_preprocess = clip.load("../models/ViT-L-14.pt", device=device)
+    vit_clip, clip_preprocess = clip.load("../../models/ViT-L-14.pt", device=device)
     print("done!")
     return aes_model, vit_clip, clip_preprocess
 

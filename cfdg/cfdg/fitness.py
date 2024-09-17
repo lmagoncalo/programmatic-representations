@@ -190,8 +190,8 @@ def tom_white(files_list):
         # convert predictions to np array
         full_predictions = np.array(full_predictions)
         # if do_score_reverse:
-        #	print("-> Applying predictions reversed")
-        #	full_predictions = 1.0 - full_predictions
+        #   print("-> Applying predictions reversed")
+        #   full_predictions = 1.0 - full_predictions
         top_classes = np.argmax(full_predictions, axis=2).flatten()
         top_class = np.argmax(np.bincount(top_classes))
         imagenet_index = IMAGENET_INDEXES[top_class]

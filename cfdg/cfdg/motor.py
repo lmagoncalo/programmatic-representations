@@ -272,7 +272,7 @@ class EvolutionaryEngine:
 
         self.config_file = Config('config.cfg')
         self.config_file.readCfgFile()
-        num_threads = 2  # Change this?
+        num_threads = 1  # Change this?
         self.best_number = 10
         self.prompt = sys.argv[3]
         self.seed = int(sys.argv[1])
