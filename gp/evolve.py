@@ -46,10 +46,10 @@ def image_evaluation(**kwargs):
         # extract the image features from the clip vit encoding
         with torch.no_grad():
             image_features = vit_model.encode_image(image)
-        im_emb_arr = normalizer(image_features.cpu().detach().numpy())
+        # im_emb_arr = normalizer(image_features.cpu().detach().numpy())
         # get aesthetic prediction from the laion model
-        prediction = aesthetic_model(torch.from_numpy(im_emb_arr).to(device).type(torch.float))
-        aesthetic_eval_laion = prediction.item()
+        # prediction = aesthetic_model(torch.from_numpy(im_emb_arr).to(device).type(torch.float))
+        # aesthetic_eval_laion = prediction.item()
 
         # calculate the cosine similarity between the text features
         # of the prompt and the image features of the current individual

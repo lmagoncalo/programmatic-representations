@@ -35,13 +35,11 @@ class EvolutionaryEngine:
         try:
             for run in runs:
                 print('Run ' + str(run))
-                random.seed(self.config_file.seeds[run])
+                random.seed(self.config_file.seeds[self.seed])
 
-                os.makedirs(self.config_file.output_directory + '/run_' + str(run) + '_' + self.config_file.seeds[run])
-                os.makedirs(self.config_file.output_directory + '/run_' + str(run) + '_' + self.config_file.seeds[
-                    run] + '/initial_pop/')
-                os.makedirs(self.config_file.output_directory + '/run_' + str(run) + '_' + self.config_file.seeds[
-                    run] + '/fitness/')
+                os.makedirs(self.config_file.output_directory + '/run_' + str(self.seed) + '_' + self.config_file.seeds[self.seed])
+                os.makedirs(self.config_file.output_directory + '/run_' + str(self.seed) + '_' + self.config_file.seeds[self.seed] + '/initial_pop/')
+                os.makedirs(self.config_file.output_directory + '/run_' + str(self.seed) + '_' + self.config_file.seeds[self.seed] + '/fitness/')
 
                 print('[' + str(run) + '] Initial Pop')
                 self.initial_pop = self.open_initial_pop(run)
@@ -49,8 +47,7 @@ class EvolutionaryEngine:
                 new_population = copy.deepcopy(self.initial_pop)
                 for generation in range(self.config_file.num_generations):
                     print('[' + str(run) + '] Generation ' + str(generation))
-                    os.makedirs(self.config_file.output_directory + '/run_' + str(run) + '_' + self.config_file.seeds[
-                        run] + '/pop' + str(generation))
+                    os.makedirs(self.config_file.output_directory + '/run_' + str(self.seed) + '_' + self.config_file.seeds[self.seed] + '/pop' + str(generation))
 
                     current_population = copy.deepcopy(new_population)
                     new_population = []
@@ -143,26 +140,20 @@ class EvolutionaryEngine:
 
                         # write cfdgs to .cfdg file
                         os.makedirs(
-                            self.config_file.output_directory + '/run_' + str(run) + '_' + self.config_file.seeds[
-                                run] + '/pop' + str(generation) + '/ind' + str(pop_element))
+                            self.config_file.output_directory + '/run_' + str(self.seed) + '_' + self.config_file.seeds[self.seed] + '/pop' + str(generation) + '/ind' + str(pop_element))
                         self.write_file(
-                            self.config_file.output_directory + '/run_' + str(run) + '_' + self.config_file.seeds[
-                                run] + '/pop' + str(generation) + '/ind' + str(pop_element) + '/' + str(
+                            self.config_file.output_directory + '/run_' + str(self.seed) + '_' + self.config_file.seeds[self.seed] + '/pop' + str(generation) + '/ind' + str(pop_element) + '/' + str(
                                 run) + '_' + str(generation) + '_' + str(pop_element) + '.cfdg', new_A.printMember())
                         os.makedirs(
-                            self.config_file.output_directory + '/run_' + str(run) + '_' + self.config_file.seeds[
-                                run] + '/pop' + str(generation) + '/ind' + str(pop_element + 1))
+                            self.config_file.output_directory + '/run_' + str(self.seed) + '_' + self.config_file.seeds[self.seed] + '/pop' + str(generation) + '/ind' + str(pop_element + 1))
                         self.write_file(
-                            self.config_file.output_directory + '/run_' + str(run) + '_' + self.config_file.seeds[
-                                run] + '/pop' + str(generation) + '/ind' + str(pop_element + 1) + '/' + str(
+                            self.config_file.output_directory + '/run_' + str(self.seed) + '_' + self.config_file.seeds[self.seed] + '/pop' + str(generation) + '/ind' + str(pop_element + 1) + '/' + str(
                                 run) + '_' + str(generation) + '_' + str(pop_element + 1) + '.cfdg',
                             new_B.printMember())
 
-                        new_A.fileName = self.config_file.output_directory + '/run_' + str(run) + '_' + \
-                                         self.config_file.seeds[run] + '/pop' + str(generation) + '/ind' + str(
+                        new_A.fileName = self.config_file.output_directory + '/run_' + str(self.seed) + '_' + self.config_file.seeds[self.seed] + '/pop' + str(generation) + '/ind' + str(
                             pop_element) + '/' + str(run) + '_' + str(generation) + '_' + str(pop_element) + '.cfdg'
-                        new_B.fileName = self.config_file.output_directory + '/run_' + str(run) + '_' + \
-                                         self.config_file.seeds[run] + '/pop' + str(generation) + '/ind' + str(
+                        new_B.fileName = self.config_file.output_directory + '/run_' + str(self.seed) + '_' + self.config_file.seeds[self.seed] + '/pop' + str(generation) + '/ind' + str(
                             pop_element + 1) + '/' + str(run) + '_' + str(generation) + '_' + str(
                             pop_element + 1) + '.cfdg'
 
@@ -195,8 +186,7 @@ class EvolutionaryEngine:
                     # header
                     to_append_write = ''
                     if not os.path.isfile(
-                            self.config_file.output_directory + '/run_' + str(run) + '_' + self.config_file.seeds[
-                                run] + '/fitness/run_statistics.csv'):
+                            self.config_file.output_directory + '/run_' + str(self.seed) + '_' + self.config_file.seeds[self.seed] + '/fitness/run_statistics.csv'):
                         to_append_write = 'Generation,Non Renderable CFDGs, Max Num. Rules, [Global] Min Num. Rules,[Local] Min Num. Rules,[Global] AVG Num. Rules,[Local] AVG Num. Rules,[Global] STD Num. Rules,[Local] STD Num. Rules,Max Dif. Rules, [Global] Min Dif. Rules,[Local] Min Dif. Rules,[Global] AVG Dif. Rules,[Local] AVG Dif. Rules,[Global] STD Dif. Rules,[Local] STD Dif. Rules,Max Total Reachable Rules, [Global] Min Total Reachable Rules,[Local] Min Total Reachable Rules,[Global] AVG Total Reachable Rules,[Local] AVG Total Reachable Rules,[Global] STD Total Reachable Rules,[Local] STD Total Reachable Rules,Max Total Unreachable Rules, [Global] Min Total Unreachable Rules,[Local] Min Total Unreachable Rules,[Global] AVG Total Unreachable Rules,[Local] AVG Total Unreachable Rules,[Global] STD Total Unreachable Rules,[Local] STD Total Unreachable Rules,Max Reachable Rules, [Global] Min Reachable Rules,[Local] Min Reachable Rules,[Global] AVG Reachable Rules,[Local] AVG Reachable Rules,[Global] STD Reachable Rules,[Local] STD Reachable Rules,Max Unreachable Rules, [Global] Min Unreachable Rules,[Local] Min Unreachable Rules,[Global] AVG Unreachable Rules,[Local] AVG Unreachable Rules,[Global] STD Unreachable Rules,[Local] STD Unreachable Rules,Max % Total Reachable, [Global] Min % Total Reachable,[Local] Min % Total Reachable,[Global] AVG % Total Reachable,[Local] AVG % Total Reachable,[Global] STD % Total Reachable,[Local] STD % Total Reachable,Max % Total Unreachable, [Global] Min % Total Unreachable,[Local] Min % Total Unreachable,[Global] AVG % Total Unreachable,[Local] AVG % Total Unreachable,[Global] STD % Total Unreachable,[Local] STD % Total Unreachable,Max % Reachable, [Global] Min % Reachable,[Local] Min % Reachable,[Global] AVG % Reachable,[Local] AVG % Reachable,[Global] STD % Reachable,[Local] STD % Reachable,Max % Unreachable, [Global] Min % Unreachable,[Local] Min % Unreachable,[Global] AVG % Unreachable,[Local] AVG % Unreachable,[Global] STD % Unreachable,[Local] STD % Unreachable,Max Productive,[Global] Min Productive,[Local] Min Productive,[Global] AVG Productive,[Local] AVG Productive,[Global] STD Productive,[Local] STD Productive,Max Unproductive,[Global] Min Unproductive,[Local] Min Unproductive,[Global] AVG Unproductive,[Local] AVG Unproductive,[Global] STD Unproductive,[Local] STD Unproductive,Max % Productive,[Global] Min % Productive,[Local] Min % Productive,[Global] AVG % Productive,[Local] AVG % Productive,[Global] STD % Productive,[Local] STD % Productive,Max % Unproductive,[Global] Min % Unproductive,[Local] Min % Unproductive,[Global] AVG % Unproductive,[Local] AVG % Unproductive,[Global] STD % Unproductive,[Local] STD % Unproductive'
                         to_append_write += ',Max ' + '_'.join(
                             self.config_file.fitness_function) + ',[Global] Min ' + '_'.join(
@@ -211,8 +201,7 @@ class EvolutionaryEngine:
                         to_append_write += '\n'
 
                     output = [generation] + generate_final_gen(new_population)
-                    f_out = open(self.config_file.output_directory + '/run_' + str(run) + '_' + self.config_file.seeds[
-                        run] + '/fitness/run_statistics.csv', 'a')
+                    f_out = open(self.config_file.output_directory + '/run_' + str(self.seed) + '_' + self.config_file.seeds[self.seed] + '/fitness/run_statistics.csv', 'a')
 
                     f_out.write(to_append_write)
 
@@ -254,8 +243,7 @@ class EvolutionaryEngine:
                                   member.fileName.split(".cfdg")[0] + '_#' + str(member.fitness) + '.cfdg')
                         member.fileName = member.fileName.split(".cfdg")[0] + '_#' + str(member.fitness) + '.cfdg'
 
-                    write_content(self.config_file.output_directory + '/run_' + str(run) + '_' + self.config_file.seeds[
-                        run] + '/fitness/pop' + str(generation) + '.csv', data_fitness_csv, assure_new=True,
+                    write_content(self.config_file.output_directory + '/run_' + str(self.seed) + '_' + self.config_file.seeds[self.seed] + '/fitness/pop' + str(generation) + '.csv', data_fitness_csv, assure_new=True,
                                   multiple=True)
 
                     if self.config_file.fitness_function[0] == 'bell':
@@ -315,8 +303,7 @@ class EvolutionaryEngine:
 
         fitness.CLIP_FITNESS = calculate_fitness
 
-        self.config_file.output_directory = self.config_file.output_directory + '/' + '_'.join(
-            self.config_file.fitness_function)
+        self.config_file.output_directory = self.config_file.output_directory + '/' + '_'.join(self.config_file.fitness_function) + '_' + self.prompt.replace(' ', '_')
 
         os.makedirs(self.config_file.output_directory, exist_ok=True)
 
@@ -341,7 +328,7 @@ class EvolutionaryEngine:
         # get N (=best_number) best elements
         runs_list = list()
         for run in range(self.config_file.num_runs):
-            runs_list.append(self.config_file.output_directory + '/run_' + str(run) + '_' + self.config_file.seeds[run])
+            runs_list.append(self.config_file.output_directory + '/run_' + str(self.seed) + '_' + self.config_file.seeds[self.seed])
 
         get_best(self.best_number, runs_list, self.config_file.output_directory + '/best_individuals')
 
@@ -426,8 +413,7 @@ class EvolutionaryEngine:
 
         files_list = list()
         for run in range(self.config_file.num_runs):
-            folder = self.config_file.output_directory + '/run_' + str(run) + '_' + self.config_file.seeds[
-                run] + '/fitness/'
+            folder = self.config_file.output_directory + '/run_' + str(self.seed) + '_' + self.config_file.seeds[self.seed] + '/fitness/'
 
             f_content_split = list()
 
@@ -562,9 +548,8 @@ class EvolutionaryEngine:
         if self.config_file.initial_pop_directory is None:
             initial_pop = []
             random_pop = initial_pop_random.generateInitialPopulation(
-                self.config_file.output_directory + '/run_' + str(run) + '_' + self.config_file.seeds[
-                    run] + '/initial_pop', self.config_file.fitness_function, self.config_file.pop_size, run,
-                self.config_file.contextfree_seed, self.config_file.seeds[run], self.config_file.max_renderer,
+                self.config_file.output_directory + '/run_' + str(self.seed) + '_' + self.config_file.seeds[self.seed] + '/initial_pop', self.config_file.fitness_function, self.config_file.pop_size, run,
+                self.config_file.contextfree_seed, self.config_file.seeds[self.seed], self.config_file.max_renderer,
                 self.config_file.rendering_time)
             return random_pop
 

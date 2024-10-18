@@ -5,6 +5,7 @@ import clip
 import numpy as np
 import torch
 import torchvision.transforms.functional as TF
+from PIL import Image
 
 import utils
 from evolution import generate
@@ -19,12 +20,13 @@ text_inputs = clip.tokenize(prompt).to(device)
 with torch.no_grad():
     text_features = vit_model.encode_text(text_inputs)
 
-
 def clip(population):
     for indi_i in range(len(population)):
-        image = population[indi_i].data.astype(np.uint8)
-        image = TF.to_tensor(image).unsqueeze(0)  # .unsqueeze(0)#TF.to_tensor(x).unsqueeze(0)
-        image = image.to(device)
+        image_numpy = population[indi_i].data
+
+        pil_image = Image.fromarray((image_numpy * 1).astype(np.uint8))
+
+        image = preprocess(pil_image).unsqueeze(0).to(device)
 
         # extract the image features from the clip vit encoding
         with torch.no_grad():
@@ -42,18 +44,20 @@ def clip(population):
         ind_fitness = similarity.item()
 
         population[indi_i].fitness = ind_fitness
+
     return population
 
 
 def main():
-    seed = int(sys.argv[1])
+    initial_seed = int(sys.argv[1])
     number_generations = int(sys.argv[2])
 
     configs = utils.load_configs("configs.json")
 
     configs['max_generation'] = number_generations
 
-    random.seed(seed)
+    random.seed(initial_seed)
+    np.random.seed(initial_seed)
     input_img = utils.create_white_img(configs['image_width'], configs['image_height'])
     generate(configs, clip, input_img)
 
