@@ -180,7 +180,7 @@ class EvolutionaryEngine:
                                             self.config_file.fitness_function, True)
 
                     # other fitnesses stats
-                    fitness.classifyFitness(new_population, self.config_file.other_fitnesses, False)
+                    # fitness.classifyFitness(new_population, self.config_file.other_fitnesses, False)
 
                     # STATISTICS TO FILE!
                     # header
@@ -312,6 +312,7 @@ class EvolutionaryEngine:
         if self.config_file.num_runs < self.num_threads:
             self.num_threads = self.config_file.num_runs
 
+        """
         num_runs_per_thread = int(self.config_file.num_runs / self.num_threads)
         self.threads = []
         for thread_index in range(self.num_threads):
@@ -322,6 +323,8 @@ class EvolutionaryEngine:
 
         for threads_index in range(self.num_threads):
             self.threads[threads_index].join()
+        """
+        self.threaded_function(0, range(1))
 
         self.generateFinalStats()
 

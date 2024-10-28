@@ -166,4 +166,6 @@ cython_debug/
 **/runs/
 
 cfdg/ContextFreeAlterado/objs/
-cfdg/cfdg/CLIP/
+cfdg/cfdg/CLIP_hot_air_balloon/
+cfdg/cfdg/CLIP_smiley/
+cfdg/cfdg/CLIP_sunset,_bright_colors/

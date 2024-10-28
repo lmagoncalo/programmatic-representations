@@ -145,7 +145,7 @@ class InitialPopGenerator:
 				
 
 
-def generateInitialPopulation(output_dir, fitness_function, num_members, run_number, context_free_seed, python_seed, max_renderer, render_time, prompt, pop_scale_factor=3):
+def generateInitialPopulation(output_dir, fitness_function, num_members, run_number, context_free_seed, python_seed, max_renderer, render_time, pop_scale_factor=3):
 	"""Function that generates a whole new population"""
 
 	initial_pop = []
@@ -171,7 +171,7 @@ def generateInitialPopulation(output_dir, fitness_function, num_members, run_num
 		initial_pop.append(member_output)
 	
 	
-	fitness.classifyFitness(initial_pop, fitness_function, True, prompt)
+	fitness.classifyFitness(initial_pop, fitness_function, True)
 
 	initial_pop.sort(key=lambda x: x.fitness, reverse=True)
 

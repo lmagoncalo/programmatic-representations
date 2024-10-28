@@ -62,7 +62,6 @@ def generate_final_gen(pop):
 
 
 	other_fit_stats = list()
-	print(fitness_dict)
 	for other_fit in fitness_dict.keys():
 		other_fit_stats += get_global_local(fitness_dict[other_fit], pop)[0]
 

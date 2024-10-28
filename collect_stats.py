@@ -5,7 +5,16 @@ import pandas as pd
 import matplotlib.patches as mpatches
 from matplotlib import pyplot as plt
 
-prompts = ["sunset, bright colors", "balloons", "smiley"]
+prompts = ["sunset, bright colors", "hot air balloon", "smiley"]
+
+
+def tolerant_mean(arrs):
+    lens = [len(i) for i in arrs]
+    arr = np.ma.empty((np.max(lens), len(arrs)))
+    arr.mask = True
+    for idx, l in enumerate(arrs):
+        arr[:len(l), idx] = l
+    return arr.mean(axis=-1)
 
 
 def collect_cgp_stats():
@@ -23,8 +32,6 @@ def collect_cgp_stats():
                 fitnesses = df['best_fitness'].values.tolist()
 
                 all_fitnesses.append(fitnesses)
-
-    print(len(all_fitnesses))
 
     # Calculate average from 10 lists
     avg_first = np.array(all_fitnesses[:10]).mean(axis=0)
@@ -74,8 +81,6 @@ def collect_gp_stats():
 
                 all_fitnesses.append(fitnesses)
 
-    print(len(all_fitnesses))
-
     # Calculate average from 10 lists
     avg_first = np.array(all_fitnesses[:10]).mean(axis=0)
     avg_second = np.array(all_fitnesses[10:20]).mean(axis=0)
@@ -108,7 +113,46 @@ def collect_gp_stats():
 
 
 def collect_cfdg_stats():
-    pass
+    sunset_folder = './cfdg/cfdg/CLIP_sunset,_bright_colors'
+    smiley_folder = './cfdg/cfdg/CLIP_smiley'
+    balloons_folder = './cfdg/cfdg/CLIP_hot_air_balloon'
+
+    all_fitnesses = []
+    for folder in [sunset_folder, smiley_folder, balloons_folder]:
+        experiment_fitness = []
+        for run_folder in os.listdir(folder):
+            stats_file = f'{folder}/{run_folder}/fitness/run_statistics.csv'
+            df = pd.read_csv(stats_file)
+            fitness = df['Max CLIP'].values
+            experiment_fitness.append(fitness)
+        all_fitnesses.append(experiment_fitness)
+
+    avg_first = tolerant_mean(all_fitnesses[0])
+    avg_second = tolerant_mean(all_fitnesses[1])
+    avg_third = tolerant_mean(all_fitnesses[2])
+
+    averages = [avg_first, avg_second, avg_third]
+
+    for i in range(3):
+        plt.figure()
+        for j in range(len(all_fitnesses[0])):
+            generations = list(range(len(all_fitnesses[i][j])))
+            plt.plot(generations, all_fitnesses[i][j], label=f"Run {j}", color="red", alpha=0.4)
+
+        generations = list(range(len(averages[i])))
+        plt.plot(generations, averages[i], label="Average", color="black")
+
+        red_patch = mpatches.Patch(color='red', label='Fitnesses of 10 runs')
+        blue_patch = mpatches.Patch(color='black', label='Average Fitness')
+
+        plt.legend(handles=[red_patch, blue_patch])
+
+        # Adding title and labels
+        plt.title('Fitness (CFDG), Prompt: ' + prompts[i])
+        plt.xlabel('Generations')
+        plt.ylabel('Fitness Value')
+
+        plt.savefig("./stats/cfdg_" + prompts[i].replace(",", "").replace(" ", "_") + ".png")
 
 
 def collect_neat_stats():
@@ -126,23 +170,12 @@ def collect_neat_stats():
 
                 all_fitnesses.append(fitnesses)
 
-    print(len(all_fitnesses))
-
-    def tolerant_mean(arrs):
-        lens = [len(i) for i in arrs]
-        arr = np.ma.empty((np.max(lens), len(arrs)))
-        arr.mask = True
-        for idx, l in enumerate(arrs):
-            arr[:len(l), idx] = l
-        return arr.mean(axis=-1)
-
     # Calculate average from 10 lists
     avg_first = tolerant_mean(all_fitnesses[:10])
     avg_second = tolerant_mean(all_fitnesses[10:20])
-    # avg_third = tolerant_mean(all_fitnesses[20:])
+    avg_third = tolerant_mean(all_fitnesses[20:])
 
-    # averages = [avg_first, avg_second, avg_third]
-    averages = [avg_first, avg_second]
+    averages = [avg_first, avg_second, avg_third]
 
     index = 0
     for i in range(3):

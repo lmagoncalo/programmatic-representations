@@ -77,7 +77,8 @@ class Config:
 			#section: Secection
 			self.tournament_size=int(self.ConfigSectionMap("Selection",config)['tournament_size'])
 			self.fitness_function=[palavra.replace(' ','') for palavra in self.ConfigSectionMap("Selection",config)['fitness_function'].replace(' ','').split(',')]
-			self.other_fitnesses= [palavra.replace(' ','') for palavra in self.ConfigSectionMap("Selection",config)['other_fitnesses'].replace(' ','').split(',')]
+			# self.other_fitnesses= [palavra.replace(' ','') for palavra in self.ConfigSectionMap("Selection",config)['other_fitnesses'].replace(' ','').split(',')]
+			self.other_fitnesses=[]
 			self.elite_size=int(self.ConfigSectionMap("Selection",config)['elite_size'])
 
 			#section: Crossover
