@@ -150,7 +150,7 @@ if __name__ == "__main__":
         # read_init_pop_from_file="test_default.txt",
         exp_prefix='emlart-gp',
         save_image_pop=False,  # True
-        save_image_best=False,  # True
+        save_image_best=True,  # True
         # image_extension="jpg",
         image_extension="png",
     )
