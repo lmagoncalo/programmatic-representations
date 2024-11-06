@@ -9,5 +9,5 @@
   "num_functions": 12,
   "mutation_rate": 0.15,
   "export_individuals": false,
-  "save_folder": "runs"
+  "save_folder": "runs_native"
 }

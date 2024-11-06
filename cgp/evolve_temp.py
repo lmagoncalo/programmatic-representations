@@ -110,7 +110,7 @@ initial_seed = int(sys.argv[1])
 number_generations = int(sys.argv[2])
 
 # output_folder = "runs/" + utils.get_current_timestamp()
-output_folder = f"runs/hal_cgp_{prompt.replace(' ', '_')}_{initial_seed}"
+output_folder = f"runs_hal/hal_cgp_{prompt.replace(' ', '_')}_{initial_seed}"
 utils.create_directory(output_folder)
 
 population_params = {"n_parents": 20, "seed": initial_seed}
