@@ -27,7 +27,6 @@ def collect_cgp_native_stats():
             stats_file = f'{rootdir}/{folder}/pop_stats.csv'
 
             if os.path.isfile(stats_file):
-                # print(stats_file)
                 df = pd.read_csv(stats_file)
                 fitnesses = df['best_fitness'].values.tolist()
 
@@ -73,7 +72,6 @@ def collect_cgp_hal_stats():
             stats_file = f'{rootdir}/hal_cgp_{folder}_{i}/stats.csv'
 
             if os.path.isfile(stats_file):
-                # print(stats_file)
                 df = pd.read_csv(stats_file)
                 fitnesses = df['Max Fitness'].values.tolist()
 
@@ -114,6 +112,8 @@ def collect_cgp_hal_stats():
 def collect_gp_stats():
     rootdir = './gp/runs/emlart-gp'
     all_fitnesses = []
+
+    print("GP:", sorted(os.listdir(rootdir)))
 
     # Iterate over files in directory
     for folder in sorted(os.listdir(rootdir)):
@@ -165,7 +165,7 @@ def collect_cfdg_stats():
     balloons_folder = './cfdg/cfdg/CLIP_hot_air_balloon'
 
     all_fitnesses = []
-    for folder in [sunset_folder, smiley_folder, balloons_folder]:
+    for folder in [sunset_folder, balloons_folder, smiley_folder]:
         experiment_fitness = []
         for run_folder in sorted(os.listdir(folder)):
             if run_folder != ".DS_Store":
@@ -249,10 +249,7 @@ def collect_neat_stats():
         plt.xlabel('Generations')
         plt.ylabel('Fitness Value')
 
-        plt.savefig("./stats/neat_" + prompts[i].replace(",", "").replace(" ", "_") + ".png")
-
-        if index >= len(all_fitnesses):
-            break
+        plt.savefig("./stats/neat_pendulum_" + prompts[i].replace(",", "").replace(" ", "_") + ".png")
 
 
 def main():
