@@ -165,7 +165,7 @@ cython_debug/
 **/.DS_Store
 **/runs/
 **/runs_native/
-**/runs_hal/
+cgp/runs/
 
 cfdg/ContextFreeAlterado/objs/
 cfdg/cfdg/CLIP_hot_air_balloon/

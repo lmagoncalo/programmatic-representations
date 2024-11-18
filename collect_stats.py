@@ -17,59 +17,13 @@ def tolerant_mean(arrs):
     return arr.mean(axis=-1)
 
 
-def collect_cgp_native_stats():
-    rootdir = './cgp/runs_native'
-    all_fitnesses = []
-
-    # Iterate over files in directory
-    for folder in sorted(os.listdir(rootdir)):
-        if folder != ".DS_Store":
-            stats_file = f'{rootdir}/{folder}/pop_stats.csv'
-
-            if os.path.isfile(stats_file):
-                df = pd.read_csv(stats_file)
-                fitnesses = df['best_fitness'].values.tolist()
-
-                all_fitnesses.append(fitnesses)
-
-    # Calculate average from 10 lists
-    avg_first = np.array(all_fitnesses[:10]).mean(axis=0)
-    avg_second = np.array(all_fitnesses[10:20]).mean(axis=0)
-    avg_third = np.array(all_fitnesses[20:]).mean(axis=0)
-
-    averages = [avg_first, avg_second, avg_third]
-
-    generations = list(range(len(all_fitnesses[0])))
-
-    index = 0
-    for i in range(3):
-        plt.figure()
-        for j in range(10):
-            plt.plot(generations, all_fitnesses[index], label=f"Run {j}", color="red", alpha=0.4)
-            index += 1
-
-        plt.plot(generations, averages[i], label="Average", color="black")
-
-        red_patch = mpatches.Patch(color='red', label='Fitnesses of 10 runs')
-        blue_patch = mpatches.Patch(color='black', label='Average Fitness')
-
-        plt.legend(handles=[red_patch, blue_patch])
-
-        # Adding title and labels
-        plt.title('Fitness (CGP), Prompt: ' + prompts[i])
-        plt.xlabel('Generations')
-        plt.ylabel('Fitness Value')
-
-        plt.savefig("./stats/cgp_native_" + prompts[i].replace(",", "").replace(" ", "_") + ".png")
-
-
-def collect_cgp_hal_stats():
-    rootdir = './cgp/runs_hal'
+def collect_cgp_stats():
+    rootdir = './cgp/runs'
     all_fitnesses = []
 
     for folder in ["sunset,_bright_colors", "hot_air_balloon", "smiley"]:
         for i in range(1, 11):
-            stats_file = f'{rootdir}/hal_cgp_{folder}_{i}/stats.csv'
+            stats_file = f'{rootdir}/cgp_{folder}_{i}/stats.csv'
 
             if os.path.isfile(stats_file):
                 df = pd.read_csv(stats_file)
@@ -105,15 +59,12 @@ def collect_cgp_hal_stats():
         plt.xlabel('Generations')
         plt.ylabel('Fitness Value')
 
-        plt.savefig("./stats/cgp_hal_" + prompts[i].replace(",", "").replace(" ", "_") + ".png")
-
+        plt.savefig("./stats/cgp_" + prompts[i].replace(",", "").replace(" ", "_") + ".png")
 
 
 def collect_gp_stats():
     rootdir = './gp/runs/emlart-gp'
     all_fitnesses = []
-
-    print("GP:", sorted(os.listdir(rootdir)))
 
     # Iterate over files in directory
     for folder in sorted(os.listdir(rootdir)):
@@ -253,8 +204,7 @@ def collect_neat_stats():
 
 
 def main():
-    collect_cgp_hal_stats()
-    collect_cgp_native_stats()
+    collect_cgp_stats()
     collect_gp_stats()
     collect_cfdg_stats()
     collect_neat_stats()

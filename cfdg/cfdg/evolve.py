@@ -19,7 +19,6 @@ from configure import Config
 from crossover import crossover
 from csv_management import write_content
 from fitness import *
-from get_n_best import get_best
 from mutation import check_member_validity
 from mutation import mutation
 from statistical import generate_final_gen
@@ -333,7 +332,7 @@ class EvolutionaryEngine:
         for run in range(self.config_file.num_runs):
             runs_list.append(self.config_file.output_directory + '/run_' + str(self.seed) + '_' + self.config_file.seeds[self.seed])
 
-        get_best(self.best_number, runs_list, self.config_file.output_directory + '/best_individuals')
+        # get_best(self.best_number, runs_list, self.config_file.output_directory + '/best_individuals')
 
     def generateFinalStats(self):
 
