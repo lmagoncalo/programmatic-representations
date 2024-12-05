@@ -33,19 +33,19 @@ class EvolutionaryEngine:
     def threaded_function(self, threadNumber, runs):
         try:
             for run in runs:
-                print('Run ' + str(run))
+                # print('Run ' + str(run))
                 random.seed(self.config_file.seeds[self.seed])
 
                 os.makedirs(self.config_file.output_directory + '/run_' + str(self.seed) + '_' + self.config_file.seeds[self.seed])
                 os.makedirs(self.config_file.output_directory + '/run_' + str(self.seed) + '_' + self.config_file.seeds[self.seed] + '/initial_pop/')
                 os.makedirs(self.config_file.output_directory + '/run_' + str(self.seed) + '_' + self.config_file.seeds[self.seed] + '/fitness/')
 
-                print('[' + str(run) + '] Initial Pop')
+                # print('[' + str(run) + '] Initial Pop')
                 self.initial_pop = self.open_initial_pop(run)
 
                 new_population = copy.deepcopy(self.initial_pop)
                 for generation in range(self.config_file.num_generations):
-                    print('[' + str(run) + '] Generation ' + str(generation))
+                    # print('[' + str(run) + '] Generation ' + str(generation))
                     os.makedirs(self.config_file.output_directory + '/run_' + str(self.seed) + '_' + self.config_file.seeds[self.seed] + '/pop' + str(generation))
 
                     current_population = copy.deepcopy(new_population)
@@ -54,7 +54,6 @@ class EvolutionaryEngine:
                     selection_output = self.tournament_selection(current_population, self.config_file.tournament_size)
 
                     for pop_element in range(0, len(selection_output), 2):
-
                         first_debug = True
 
                         # parents selection
@@ -86,6 +85,13 @@ class EvolutionaryEngine:
 
                         new_A = copy.deepcopy(crossover_tuple[0])
                         new_B = copy.deepcopy(crossover_tuple[1])
+
+                        # TODO - Verificar tamanho do individuo, se tamanho for grande add do pai
+                        # if len(new_A.rule_list) > 200:
+                        #     new_A = copy.deepcopy(A)
+
+                        # if len(new_B.rule_list) > 200:
+                        #     new_B = copy.deepcopy(B)
 
                         random.setstate(crossover_tuple[2])
 
@@ -143,18 +149,23 @@ class EvolutionaryEngine:
                         self.write_file(
                             self.config_file.output_directory + '/run_' + str(self.seed) + '_' + self.config_file.seeds[self.seed] + '/pop' + str(generation) + '/ind' + str(pop_element) + '/' + str(
                                 run) + '_' + str(generation) + '_' + str(pop_element) + '.cfdg', new_A.printMember())
+                        self.write_file(
+                            self.config_file.output_directory + '/run_' + str(self.seed) + '_' + self.config_file.seeds[self.seed] + '/pop' + str(generation) + '/ind' + str(pop_element) + '/' + "(" + str(A.id) + "&" + str(B.id) + ").txt", "")
+
                         os.makedirs(
                             self.config_file.output_directory + '/run_' + str(self.seed) + '_' + self.config_file.seeds[self.seed] + '/pop' + str(generation) + '/ind' + str(pop_element + 1))
                         self.write_file(
                             self.config_file.output_directory + '/run_' + str(self.seed) + '_' + self.config_file.seeds[self.seed] + '/pop' + str(generation) + '/ind' + str(pop_element + 1) + '/' + str(
                                 run) + '_' + str(generation) + '_' + str(pop_element + 1) + '.cfdg',
                             new_B.printMember())
+                        self.write_file(
+                            self.config_file.output_directory + '/run_' + str(self.seed) + '_' + self.config_file.seeds[self.seed] + '/pop' + str(generation) + '/ind' + str(pop_element + 1) + '/' + "(" + str(A.id) + "&" + str(B.id) + ").txt", "")
 
-                        new_A.fileName = self.config_file.output_directory + '/run_' + str(self.seed) + '_' + self.config_file.seeds[self.seed] + '/pop' + str(generation) + '/ind' + str(
-                            pop_element) + '/' + str(run) + '_' + str(generation) + '_' + str(pop_element) + '.cfdg'
-                        new_B.fileName = self.config_file.output_directory + '/run_' + str(self.seed) + '_' + self.config_file.seeds[self.seed] + '/pop' + str(generation) + '/ind' + str(
-                            pop_element + 1) + '/' + str(run) + '_' + str(generation) + '_' + str(
-                            pop_element + 1) + '.cfdg'
+                        new_A.fileName = self.config_file.output_directory + '/run_' + str(self.seed) + '_' + self.config_file.seeds[self.seed] + '/pop' + str(generation) + '/ind' + str(pop_element) + '/' + str(run) + '_' + str(generation) + '_' + str(pop_element) + '.cfdg'
+                        new_B.fileName = self.config_file.output_directory + '/run_' + str(self.seed) + '_' + self.config_file.seeds[self.seed] + '/pop' + str(generation) + '/ind' + str(pop_element + 1) + '/' + str(run) + '_' + str(generation) + '_' + str(pop_element + 1) + '.cfdg'
+
+                        new_A.id = pop_element
+                        new_B.id = pop_element + 1
 
                         # cfdg rendering to .png
                         fitness.renderGrammar(new_A, new_A.fileName, new_A.fileName.split('.cfdg')[0] + '.png',
@@ -260,14 +271,14 @@ class EvolutionaryEngine:
         self.config_file = Config('config.cfg')
         self.config_file.readCfgFile()
         num_threads = 1  # Change this?
-        self.best_number = 10
+        # self.best_number = 10
         self.prompt = sys.argv[3]
         self.seed = int(sys.argv[1])
         self.config_file.num_generations = int(sys.argv[2])
 
-        print("Number of generations: ", self.config_file.num_generations)
+        # print("Number of generations: ", self.config_file.num_generations)
 
-        print(("Setting seed: ", self.seed))
+        # print(("Setting seed: ", self.seed))
         random.seed(self.seed)
         np.random.seed(self.seed)
         # tf.random.set_seed(self.seed)
@@ -327,12 +338,14 @@ class EvolutionaryEngine:
 
         self.generateFinalStats()
 
+        """
         # get N (=best_number) best elements
         runs_list = list()
         for run in range(self.config_file.num_runs):
             runs_list.append(self.config_file.output_directory + '/run_' + str(self.seed) + '_' + self.config_file.seeds[self.seed])
 
-        # get_best(self.best_number, runs_list, self.config_file.output_directory + '/best_individuals')
+        get_best(self.best_number, runs_list, self.config_file.output_directory + '/best_individuals')
+        """
 
     def generateFinalStats(self):
 
@@ -601,12 +614,13 @@ class EvolutionaryEngine:
             old_pop.sort(key=operator.attrgetter('fitness'), reverse=True)
         temp_pop = copy.deepcopy(old_pop[:elite_size]) + copy.deepcopy(new_pop[:len(new_pop) - elite_size])
 
-        names_rename = [names.fileName for names in new_pop[len(new_pop) - elite_size:]]
+        ind_rename = [inds for inds in new_pop[len(new_pop) - elite_size:]]
 
         for current_member_elite in temp_pop[:elite_size]:
-            new_fileName = names_rename.pop()
-            self.write_file(new_fileName, current_member_elite.printMember())
-            current_member_elite.fileName = new_fileName
+            new_ind = ind_rename.pop()
+            self.write_file(new_ind.fileName, current_member_elite.printMember())
+            current_member_elite.fileName = new_ind.fileName
+            current_member_elite.id = new_ind.id
             fitness.renderGrammar(current_member_elite, current_member_elite.fileName,
                                   current_member_elite.fileName.split('.cfdg')[0] + '.png',
                                   self.config_file.contextfree_seed, rendering_time=self.config_file.rendering_time,

@@ -5,6 +5,7 @@ class PopMember:
 		nodes that has a set of properties"""
 
 	def __init__(self):
+		self.id = 999
 		self.startshape = None
 		self.background = None
 		self.rule_list = list()
@@ -14,7 +15,6 @@ class PopMember:
 		self.fitness_dict = dict()
 		self.statistics = None
 		self.renderings = list()
-
 
 	def addRendering(self,rendering_dir):
 		new_render = Rendering(rendering_dir)
