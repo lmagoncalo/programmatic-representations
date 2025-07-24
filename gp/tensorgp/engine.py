@@ -2757,7 +2757,7 @@ class Engine:
     def save_pop_and_bests(self, population, first_save=False):
         if self.can_save_image_best():
             # Save Best Image
-            fn = self.experiment.bests_directory + "best_gen" + str(self.current_generation).zfill(5)
+            fn = self.experiment.bests_directory + "best_gen" + str(self.current_generation).zfill(5) + "_" + str(self.best['fitness'])
             save_image(self.best['tensor'], 0, fn, self.target_dims, BGR=self.do_bgr,
                        extension=self.image_extension)
 
