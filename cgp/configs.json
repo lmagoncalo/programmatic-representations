@@ -1,0 +1,29 @@
+{
+  "output_folder_root": "runs",
+
+  "image_settings": {
+    "num_rows": 224,
+    "num_columns": 224,
+    "num_outputs": 3
+  },
+
+  "genome_params": {
+    "n_inputs": 2,
+    "n_outputs": 3,
+    "n_columns": 50,
+    "n_rows": 1,
+    "levels_back": 50
+  },
+
+  "population_params": {
+    "n_parents": 50
+  },
+
+  "evolution_params": {
+    "n_offsprings": 50,
+    "tournament_size": 4,
+    "mutation_rate": 0.15,
+    "max_generations": 100,
+    "termination_fitness": 1.0
+  }
+}
