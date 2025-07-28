@@ -1,0 +1,12 @@
+{
+  "width": 224,
+  "height": 224,
+  "channels": 3,
+
+  "n_parents": 50,
+
+  "population_size": 100,
+  "tournament_size": 5,
+  "mutation_rate": 0.9,
+  "crossover_rate": 0.5
+}

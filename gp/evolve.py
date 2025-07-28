@@ -9,12 +9,20 @@ import sys
 import numpy as np
 from PIL import Image
 
+import utils
+
 # device for the clip and aesthetic model
 device = 'cuda' if torch.cuda.is_available() else 'mps' if torch.backends.mps.is_available() else 'cpu'
 aesthetic_model, vit_model, preprocess = init_laion(device)
 
-# Process the prompt, only needed once!
-prompt = sys.argv[3]  # e.g. "sunset, bright colors"
+# Load config
+config = utils.load_configs("configs.json")
+
+# CLI args
+initial_seed    = int(sys.argv[1])
+number_gens     = int(sys.argv[2])
+prompt          = sys.argv[3]
+
 text_inputs = clip.tokenize(prompt).to(device)
 with torch.no_grad():
     text_features = vit_model.encode_text(text_inputs)
@@ -81,10 +89,11 @@ if __name__ == "__main__":
     dev = "gpu" if torch.cuda.is_available() else "cpu"  # '/gpu:0'  # device to run, write '/cpu_0' to run on cpu
     # when converting from genotype to phenotype 
     # we will be creating an individual at the following resolution
-    image_resolution = [224, 224, 3]
-    # some EC related params
-    seed = int(sys.argv[1])
-    number_generations = int(sys.argv[2])
+    width = config["width"]
+    height = config["height"]
+    channels = config["channels"]
+
+    image_resolution = [width, height, channels]
 
     fset = {'abs', 'add', 'and', 'cos', 'div', 'exp', 'frac', 'if', 'log',
             'max', 'mdist', 'min', 'mult', 'neg', 'or', 'pow', 'sin', 'sqrt', 'sub', 'tan', 'warp', 'xor'}
@@ -93,12 +102,12 @@ if __name__ == "__main__":
     # create TensorGP engine
     engine = Engine(
         fitness_func=image_evaluation,
-        population_size=100,
-        tournament_size=5,
+        population_size=config["population_size"],
+        tournament_size=config["tournament_size"],
 
         # EC related probabilities
-        mutation_rate=0.9,
-        crossover_rate=0.5,
+        mutation_rate=config["mutation_rate"],
+        crossover_rate=config["crossover_rate"],
         # GP specific
         terminal_prob=0.2,
         scalar_prob=0.50,
@@ -134,9 +143,9 @@ if __name__ == "__main__":
         final_transform=[0, 255],
 
         # exp related
-        stop_value=number_generations,
+        stop_value=number_gens,
         effective_dims=3,
-        seed=seed,
+        seed=initial_seed,
         operators=fset,
         debug=0,
         save_to_file=1,
@@ -154,5 +163,5 @@ if __name__ == "__main__":
         # image_extension="jpg",
         image_extension="png",
     )
-    print("Evolving with the prompt:", sys.argv[3])
+    print("Evolving with the prompt:", prompt)
     engine.run()

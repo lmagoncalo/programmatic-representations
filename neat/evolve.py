@@ -10,14 +10,25 @@ import torch
 from PIL import Image
 
 import neat
+import utils
 from laion_aesthetics import init_laion
 
 # device for the clip and aesthetic model
 device = 'cuda' if torch.cuda.is_available() else 'mps' if torch.backends.mps.is_available() else 'cpu'
 aesthetic_model, vit_model, preprocess = init_laion(device)
 
-# Process the prompt, only needed once!
-prompt = sys.argv[3]  # e.g. "sunset, bright colors"
+# Load config
+config = utils.load_configs("configs.json")
+
+# CLI args
+initial_seed    = int(sys.argv[1])
+number_gens     = int(sys.argv[2])
+prompt          = sys.argv[3]
+output_folder_root = config["output_folder_root"]
+
+output_folder = f"{output_folder_root}/neat_{prompt.replace(' ', '_')}_{initial_seed}"
+utils.create_directory(output_folder)
+
 text_inputs = clip.tokenize(prompt).to(device)
 with torch.no_grad():
     text_features = vit_model.encode_text(text_inputs)
@@ -91,7 +102,7 @@ def image_evaluation(genomes, config):
         genome.fitness = ind_fitness
 
     # Save best
-    best_ind.save(f"{save_path}images/best/best_gen{pop.generation:05d}.png")
+    best_ind.save(f"{output_folder}/images/best/best_gen{pop.generation:05d}.png")
 
     print("Best Fitness:", best_fitness)
 
@@ -101,36 +112,36 @@ if __name__ == "__main__":
     dev = "gpu:0"  # '/gpu:0'  # device to run, write '/cpu_0' to run on cpu
     # when converting from genotype to phenotype 
     # we will be creating an individual at the following resolution
-    image_resolution = [224, 224, 3]
-    # some EC related params
-    initial_seed = int(sys.argv[1])
-    number_generations = int(sys.argv[2])
+    width = config["width"]
+    height = config["height"]
+    channels = config["channels"]
 
-    config_path = 'interactive_config_color'
+    image_resolution = [width, height, channels]
+
+    config_path = config["config_path"]
 
     # Note that we provide the custom stagnation class to the Config constructor.
-    config = neat.Config(neat.DefaultGenome, neat.DefaultReproduction,
+    neat_config = neat.Config(neat.DefaultGenome, neat.DefaultReproduction,
                          neat.DefaultSpeciesSet, neat.DefaultStagnation,
                          config_path)
 
-    config.pop_size = 100
-    pop = neat.Population(config)
+    neat_config.pop_size = config["population_size"]
+    pop = neat.Population(neat_config)
 
-    print("Evolving with the prompt:", sys.argv[3])
+    print("Evolving with the prompt:", prompt)
 
     date = datetime.datetime.utcnow().strftime('%Y_%m_%d__%H_%M_%S_%f')[:-3]
     # define the name of the directory with its subdirectories
-    save_path = f'runs/run_{date}/'
-    os.makedirs(save_path + "images/all", exist_ok=True)
-    os.makedirs(save_path + "images/best", exist_ok=True)
+    os.makedirs(output_folder + "/images/all", exist_ok=True)
+    os.makedirs(output_folder + "/images/best", exist_ok=True)
 
     # Copy configuration
-    shutil.copy(config_path, save_path + config_path)
+    shutil.copy(config_path, output_folder + "/" + config_path)
 
-    for _ in range(number_generations):
+    for _ in range(number_gens):
         print(f"Generation: {pop.generation}")
         # Create generation folder
-        os.makedirs(f"{save_path}images/all/generation_{pop.generation:05d}", exist_ok=True)
+        os.makedirs(output_folder + f"/images/all/generation_{pop.generation:05d}", exist_ok=True)
 
         pop.run(image_evaluation, 1)    
 

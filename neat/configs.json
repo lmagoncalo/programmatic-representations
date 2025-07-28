@@ -1,0 +1,11 @@
+{
+  "output_folder_root": "runs",
+  
+  "width": 224,
+  "height": 224,
+  "channels": 3,
+
+  "config_path": "interactive_config_color",
+
+  "population_size": 100
+}

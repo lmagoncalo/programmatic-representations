@@ -53,10 +53,10 @@ with torch.no_grad():
     text_features = vit_model.encode_text(text_inputs)
 
 
-def get_input_matrix(min_value, max_value, num_rows, num_columns, num_rotations):
-    matrix = np.linspace(min_value, max_value, num=num_rows)
-    matrix = np.resize(matrix, num_rows * num_columns)
-    matrix = np.reshape(matrix, (num_rows, num_columns))
+def get_input_matrix(min_value, max_value, width, height, num_rotations):
+    matrix = np.linspace(min_value, max_value, num=width)
+    matrix = np.resize(matrix, width * height)
+    matrix = np.reshape(matrix, (width, height))
     matrix = np.rot90(matrix, k=num_rotations)
 
     return matrix
@@ -66,23 +66,23 @@ def objective(individual):
     if not individual.fitness_is_None():
         return individual
 
-    num_rows = image_settings["num_rows"]
-    num_columns = image_settings["num_columns"]
-    num_outputs = image_settings["num_outputs"]
+    width = image_settings["width"]
+    height = image_settings["height"]
+    channels = image_settings["channels"]
 
-    output = np.zeros((num_outputs, num_rows, num_columns), dtype=np.float32)
+    output = np.zeros((channels, width, height), dtype=np.float32)
 
     f = individual.to_func()
 
-    x_values = get_input_matrix(-1.0, 1.0, num_rows, num_columns, 0)
-    y_values = get_input_matrix(-1.0, 1.0, num_rows, num_columns, 1)
+    x_values = get_input_matrix(-1.0, 1.0, width, height, 0)
+    y_values = get_input_matrix(-1.0, 1.0, width, height, 1)
     input_data = np.array((x_values, y_values))
 
-    for i in range(num_rows):
-        for j in range(num_columns):
+    for i in range(width):
+        for j in range(height):
             output[:, i, j] = f(input_data[0, i, j], input_data[1, i, j])
 
-    for k in range(num_outputs):
+    for k in range(channels):
         output[k, :, :] = np.interp(output[k, :, :], [0.0, 1.0], [0.0, 255.0])
 
     pil_image = Image.fromarray(output.transpose(1,2,0).astype(np.uint8))
