@@ -23,6 +23,12 @@ cd hal-cgp/
 pip install .
 cd ..
 
+# Install libpng12 on Ubuntu < 20.0 (Try this first)
+
+sudo add-apt-repository ppa:linuxuprising/libpng12
+sudo apt update
+sudo apt install libpng12-0
+
 # Install libpng12 on Ubuntu > 20.0
 
 sudo apt install build-essential zlib1g-dev
